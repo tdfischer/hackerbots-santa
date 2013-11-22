@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Seekrit Santa{% endblock %}
+{% block pageTitle %}Welcome{% endblock %}
+{% block content %}
+<h2>Your Notational Santa Authenticity Data (NSA Data)</h2>
+{% if user.participations %}
+  {% for participant in user.participations.all %}
+    <div class="well">
+      <p>For {{participant.exchange.name}}</p>
+      <p>{{participant.exchange.description}}</p>
+    </div>
+    <p>
+      To invite someone to this exchange, share this link:
+      <a href="{% url 'join' hash=participant.exchange.linkHash %}">
+        {% url 'join' hash=participant.exchange.linkHash %}
+      </a>
+    </p>
+    <table class="table table-hover table-striped">
+      <tr>
+        <td>Username</td>
+        <td>{{user.username}}</td>
+      </tr>
+      <tr>
+        <td>Name</td>
+        <td>{{participant}}</td> 
+      </tr>
+      <tr>
+        <td>Address</td>
+        <td>{{participant.address}}</td>
+      </tr>
+      <tr>
+        <td>International Shipping?</td>
+        <td>
+          {% if participant.internationalOK %}
+            Sure, I can do that!
+          {% else %}
+            Nope.
+          {% endif %}
+        </td>
+      </tr>
+      <tr>
+        <td>Suggestions</td>
+        <td>{{participant.suggestions}}</td>
+      </tr>
+    </table>
+    {% if participant.exchange.matchDate %}
+      <div class="alert alert-success">
+        <p>Participants were matched on {{participant.exchange.matchDate}}
+      </div>
+    {% else %}
+      <div class="alert alert-info">
+        <p>Participants have not yet been matched. This exchange closes on
+        {{participant.exchange.closeDate}} and will be matched shortly after.</p>
+      </div>
+    {% endif %}
+  {% endfor %}
+{% else %}
+<p>You are not enrolled in any exchanges! Whats up with that?</p>
+{% endif %}
+{% endblock %}

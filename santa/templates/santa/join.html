@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+
+{% block extrahead %}
+<script type="text/javascript">
+<!--
+$(document).ready(function() {
+  $('#yes').click(function() {
+    $('#buttons').hide('drop', {'direction': 'left'});
+    $('#membership-app').show('drop', {'direction': 'down'});
+  });
+  $('#no').click(function() {
+    window.location = 'http://thebest404pageever.com';
+  });
+});
+-->
+</script>
+{% endblock %}
+
+{% block title %}Join {{exchange.name}}{% endblock %}
+{% block pageTitle %}Join {{exchange.name}}{% endblock %}
+
+{% block content %}
+<h2>Join the {{exchange.name}} exchange</h2>
+<div id="buttons">
+  <div class="alert alert-info">You are about to join the {{exchange.name}} exchange. Are you cool with
+  that?</div>
+{% buttons %}
+  <button class="btn btn-success" id="yes">Heck yes.</button>
+  <button class="btn btn-danger" id="no">No!!</button>
+{% endbuttons %}
+</div>
+<form role="form" method="POST" id="membership-app" style="display:none">
+  <div class="alert alert-success">Alright, good. Just fill out this quick questionaire and we can get you
+  hooked up.</div>
+  {% csrf_token %}
+  {% if registerForm %}
+    {% bootstrap_form registerForm %}
+  {% else %}
+  <div class="alert alert-info"> You're currently logged in as {{user.first_name}}
+    {{user.last_name}}</div>
+  {% endif %}
+  {% bootstrap_form participationForm %}
+  {% buttons %}
+    <p>Its about to get off the hook.</p>
+    <button class="btn btn-lg">Lets do this.</button>
+  {% endbuttons %}
+</form>
+{% endblock %}
