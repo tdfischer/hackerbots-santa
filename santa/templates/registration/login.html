@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load url from future %}
+{% load bootstrap3 %}
+
+{% block title %}Seekrit Santa{% endblock %}
+{% block pageTitle %}Welcome{% endblock %}
+{% block content %}
+<p>Hackerbots Seekrit Santa</p>
+<p>If you're here, you know why.</p>
+<form role="form" method="POST" action="{% url 'auth:login' %}">
+  {% csrf_token %}
+  {% bootstrap_form form %}
+  {% buttons %}
+    <button type="submit" class="btn btn-primary">
+      Login
+    </button>
+  {% endbuttons %}
+</form>
+{% endblock %}
+
