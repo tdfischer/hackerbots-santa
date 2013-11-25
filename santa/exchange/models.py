@@ -12,7 +12,7 @@ class Exchange(models.Model):
   users = models.ManyToManyField(User, related_name='exchanges', through='Participant')
 
   def __unicode__(self):
-    return self.name
+    return "%s (%s)" %(self.name, self.linkHash())
 
   def linkHash(self):
     hasher = Hashids(settings.EXCHANGE_HASH_SALT)
