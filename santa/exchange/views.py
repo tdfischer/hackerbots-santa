@@ -36,6 +36,8 @@ def join(request, hash):
         fullName = registerForm.cleaned_data['displayName'].split(' ', 1)
         if len(fullName) == 1:
           lastName = ""
+        else:
+          lastName = ' '.join(fullName[1:])
         firstName = fullName[0]
         user.first_name = firstName
         user.last_name = lastName
