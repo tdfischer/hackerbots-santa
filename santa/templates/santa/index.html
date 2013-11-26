@@ -9,7 +9,7 @@
   {% for participant in user.participations.all %}
     <div class="well">
       <p>For {{participant.exchange.name}}</p>
-      <p>{{participant.exchange.description}}</p>
+      <p>{{participant.exchange.description|markdown}}</p>
     </div>
     <p>
       To invite someone to this exchange, share this link:
@@ -28,7 +28,7 @@
       </tr>
       <tr>
         <td>Address</td>
-        <td>{{participant.address}}</td>
+        <td>{{participant.address|markdown}}</td>
       </tr>
       <tr>
         <td>International Shipping?</td>
