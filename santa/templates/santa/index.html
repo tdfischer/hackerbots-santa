@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load santa_markup %}
 
 {% block title %}Seekrit Santa{% endblock %}
 {% block pageTitle %}Welcome{% endblock %}
@@ -41,7 +42,7 @@
       </tr>
       <tr>
         <td>Suggestions</td>
-        <td>{{participant.suggestions}}</td>
+        <td>{{participant.suggestions|markdown}}</td>
       </tr>
     </table>
     {% if participant.exchange.matchDate %}
