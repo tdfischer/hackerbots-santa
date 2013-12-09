@@ -49,6 +49,21 @@
       <div class="alert alert-success">
         <p>Participants were matched on {{participant.exchange.matchDate}}
       </div>
+      <h3>Your Match</h3>
+      <table class="table table-hover table-striped">
+        <tr>
+          <td>Name</td>
+          <td>{{participant.match}}
+        </tr>
+        <tr>
+          <td>Address</td>
+          <td>{{participant.match.address|markdown}}</td>
+        </tr>
+        <tr>
+          <td>Suggestions</td>
+          <td>{{participant.suggestions|markdown}}</td>
+        </tr>
+      </table>
     {% else %}
       <div class="alert alert-info">
         <p>Participants have not yet been matched. This exchange closes on

@@ -1,6 +1,8 @@
 from django.core.management.base import BaseCommand, CommandError
 from santa.exchange.models import Exchange, Participant
+import datetime
 import random
+from django.db import transaction
 
 class ParticipantSlot(object):
   def __init__(self, data):
@@ -122,3 +124,11 @@ class Command(BaseCommand):
           print "FAILURE"
       else:
         print "Saving exchange..."
+        with transaction.atomic():
+          for p in match.matched():
+            print str(p.data) + "..."
+            p.data.match = p.giftee.data
+            p.data.save()
+          exchange.matchDate = datetime.date.today()
+          exchange.save()
+        print "Exchange complete as of", exchange.matchDate
