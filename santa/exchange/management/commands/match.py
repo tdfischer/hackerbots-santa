@@ -109,19 +109,19 @@ class Command(BaseCommand):
         match.add(ParticipantSlot(participant))
       match.generateMatches()
 
-      print "Matches:"
-      for p in match.matched():
-        print "\t", p.data, '->', p.giftee.data
-
-      print "UNMATCHED:"
-      for p in match.unmatched():
-        print "\t", p
-
-      print "Patially Matched:"
-      for p in match.unmatchedGiftees()+match.unmatchedGifters():
-        print "\t", p.gifter, '->', p, '->', p.giftee
       if len(match.unmatchedGiftees()+match.unmatchedGifters()) > 0 or len(match.unmatched()) > 0:
-          print "FAILURE"
+        print "FAILURE"
+        print "Matches:"
+        for p in match.matched():
+          print "\t", p.data, '->', p.giftee.data
+
+        print "UNMATCHED:"
+        for p in match.unmatched():
+          print "\t", p
+
+        print "Patially Matched:"
+        for p in match.unmatchedGiftees()+match.unmatchedGifters():
+          print "\t", p.gifter, '->', p, '->', p.giftee
       else:
         print "Saving exchange..."
         with transaction.atomic():
