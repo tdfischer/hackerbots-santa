@@ -135,12 +135,3 @@ class Command(BaseCommand):
           exchange.matchDate = datetime.date.today()
           exchange.save()
         print "Exchange complete as of", exchange.matchDate
-        print "Sending notifications..."
-        for p in match.matched():
-          print str(p.data) + "..."
-          contents = "Greetings, %s!\n\nI, the loyal robot Phong, have ran a somewhat sketchy matching algorithm on a bunch of personal data you gave me for %s. Ain't science cool?\n\nTo see the results, have a look at https://hackerbots.net/santa/." % ( p.data, p.data.exchange.name )
-          try:
-            send_mail('Seekrit Santa!', contents, 'phong@hackerbots.net',
-                [p.data.user.email])
-          except:
-            print "Could not send mail to", p.data
