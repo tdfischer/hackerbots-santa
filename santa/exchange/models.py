@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
 from hashids import Hashids
+from geocode.google import GoogleGeocoderClient
+import countryinfo
 
 class Exchange(models.Model):
   name = models.CharField(max_length=100)
@@ -20,13 +22,40 @@ class Exchange(models.Model):
 
 class Participant(models.Model):
   user = models.ForeignKey(User, related_name='participations')
-  exchange = models.ForeignKey(Exchange)
+  exchange = models.ForeignKey(Exchange, related_name='participants')
   created = models.DateTimeField(auto_now_add=True)
   modified = models.DateTimeField(auto_now=True)
   match = models.ForeignKey('Participant', related_name='match_from', blank=True, null=True)
   address = models.TextField()
   internationalOK = models.BooleanField(default=False)
   suggestions = models.TextField()
+
+  @property
+  def matched(self):
+    return self.gifter is None
+
+  @property
+  def geocode(self):
+    geo = GoogleGeocoderClient(False)
+    addr = geo.geocode(self.address)
+    if not addr.is_success():
+      return None
+    else:
+      return addr
+
+  @property
+  def country(self):
+    for c in addr[0]['address_components']:
+      if 'country' in c['types']:
+        return c['short_name']
+
+  @property
+  def continent(self):
+    for c in addr[0]['address_components']:
+      if 'country' in c['types']:
+        for country in countryinfo.countries:
+          if self.country == country['code']:
+            return country['continent']
 
   def __unicode__(self):
     return "%s %s"%(self.user.first_name, self.user.last_name)
