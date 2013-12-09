@@ -45,13 +45,13 @@ class Participant(models.Model):
 
   @property
   def country(self):
-    for c in addr[0]['address_components']:
+    for c in self.geocode[0]['address_components']:
       if 'country' in c['types']:
         return c['short_name']
 
   @property
   def continent(self):
-    for c in addr[0]['address_components']:
+    for c in self.geocode[0]['address_components']:
       if 'country' in c['types']:
         for country in countryinfo.countries:
           if self.country == country['code']:
