@@ -41,21 +41,27 @@ class Participant(models.Model):
     if not addr.is_success():
       return None
     else:
-      return addr
+      return addr[0]
 
   @property
   def country(self):
-    for c in self.geocode[0]['address_components']:
-      if 'country' in c['types']:
-        return c['short_name']
+    geo = self.geocode
+    if geo is not None:
+      for c in geo['address_components']:
+        if 'country' in c['types']:
+          return c['short_name']
+    return None
 
   @property
   def continent(self):
-    for c in self.geocode[0]['address_components']:
-      if 'country' in c['types']:
-        for country in countryinfo.countries:
-          if self.country == country['code']:
-            return country['continent']
+    geo = self.geocode
+    if geo is not None:
+      for c in geo['address_components']:
+        if 'country' in c['types']:
+          for country in countryinfo.countries:
+            if self.country == country['code']:
+              return country['continent']
+    return None
 
   def __unicode__(self):
     return "%s %s"%(self.user.first_name, self.user.last_name)
