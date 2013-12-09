@@ -105,6 +105,8 @@ class Command(BaseCommand):
         exchange = Exchange.objects.get(pk=int(exchange_id))
       except Exchange.DoesNotExist:
         raise CommandError('Exchange "%s" does not exist' % exchange_id)
+      if exchange.matchDate is not None:
+        raise CommandError('Exchange "%s" has already been matched!' % exchange_id)
       match = Matcher()
       for participant in exchange.participants.all():
         match.add(ParticipantSlot(participant))

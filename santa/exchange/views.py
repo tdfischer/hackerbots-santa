@@ -13,6 +13,10 @@ def join(request, hash):
 
   user = request.user
 
+  if exchange.closeDate < datetime.date.today():
+    messages.error(request, "That exchange has closed.")
+    return redirect('index') 
+
   registerForm = None
   if request.method == 'POST':
     participateForm = forms.ParticipationForm(request.POST)
